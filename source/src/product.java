@@ -9,7 +9,9 @@ public class product {
     private String product_quantity;
     private String product_description;
     private int categories_id;
+    private String categories_name;
     private int distributor_id;
+    private String distributor_name;
     public int getProduct_id() {
         return product_id;
     }
@@ -64,6 +66,23 @@ public class product {
     public void setDistributor_id(int distributor_id) {
         this.distributor_id = distributor_id;
     }
+
+    public String getCategories_name() {
+        return this.categories_name;
+    }
+
+    public void setCategories_name(String categories_name) {
+        this.categories_name = categories_name;
+    }
+
+    public String getDistributor_name() {
+        return this.distributor_name;
+    }
+
+    public void setDistributor_name(String distributor_name) {
+        this.distributor_name = distributor_name;
+    }
+
     @Override
     public String toString() {
         return "product [product_id=" + product_id + ", product_code=" + product_code + ", product_name=" + product_name

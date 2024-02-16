@@ -12,6 +12,8 @@ import java.util.List;
 
 public class dataSource {
     public static final String DB_Name = "store_manager";
+    String username = "root";
+    String password = "15112003";
     public static final String CONNECTION_STRING = "jdbc:mySQL://localhost:3306/" + DB_Name;
 
     // All the database tables and their columns are stored as String variables
@@ -90,7 +92,7 @@ public class dataSource {
      */
     public boolean open() {
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = DriverManager.getConnection(CONNECTION_STRING,username,password);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to database: " + e.getMessage());
@@ -273,8 +275,8 @@ public class dataSource {
     /**
      * This method insert one product to the database.
      */
-    public boolean insertNewProduct(String code, String name, String size, String price, String quantity,
-            String description, String category_id, String distributor_id) {
+    public boolean insertNewProduct(String code, String name, String size, double price, int quantity,
+            String description, int category_id, int distributor_id) {
 
         String sql = "INSERT INTO " + TABLE_PRODUCT + " ("
                 + COLUMN_PRODUCT_CODE + ", "
@@ -291,11 +293,11 @@ public class dataSource {
             statement.setString(1, code);
             statement.setString(2, name);
             statement.setString(3, size);
-            statement.setString(4, price);
-            statement.setString(5, quantity);
+            statement.setDouble(4, price);
+            statement.setInt(5, quantity);
             statement.setString(6, description);
-            statement.setString(7, category_id);
-            statement.setString(8, distributor_id);
+            statement.setInt(7, category_id);
+            statement.setInt(8, distributor_id);
 
             statement.executeUpdate();
             return true;
@@ -308,8 +310,8 @@ public class dataSource {
     /**
      * This method updates one product to the database.
      */
-    public boolean updateOneProduct(String code, String name, String size, String price, String quantity,
-            String description, String category_id, String distributor_id) {
+    public boolean updateOneProduct(String code, String name, String size, double price, int quantity,
+            String description, int category_id, int distributor_id) {
 
         String sql = "UPDATE " + TABLE_PRODUCT + " SET "
                 + COLUMN_PRODUCT_CODE + " = ?" + ", "
@@ -326,11 +328,11 @@ public class dataSource {
             statement.setString(1, code);
             statement.setString(2, name);
             statement.setString(3, size);
-            statement.setString(4, price);
-            statement.setString(5, quantity);
+            statement.setDouble(4, price);
+            statement.setInt(5, quantity);
             statement.setString(6, description);
-            statement.setString(7, category_id);
-            statement.setString(8, distributor_id);
+            statement.setInt(7, category_id);
+            statement.setInt(8, distributor_id);
 
             statement.executeUpdate();
             return true;
@@ -569,9 +571,10 @@ public class dataSource {
     /**
      * This method gets one user from the database based on the email provided.
      */
-    public customer getUserByEmail(String email) throws SQLException {
+    public customer getCustomerByEmail(String email) throws SQLException {
 
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_EMAIL + " = ?");
+        PreparedStatement preparedStatement = conn
+                .prepareStatement("SELECT * FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_EMAIL + " = ?");
         preparedStatement.setString(1, email);
         ResultSet results = preparedStatement.executeQuery();
 
@@ -618,10 +621,12 @@ public class dataSource {
 
         return user;
     }
+
     /**
      * This method insert one simple user to the database.
      */
-    public boolean insertNewUser(String users_username, String users_password, String users_fullname, String users_phone, String users_address, String users_description) {
+    public boolean insertNewUser(String users_username, String users_password, String users_fullname,
+            String users_phone, String users_address, String users_description) {
 
         String sql = "INSERT INTO " + TABLE_USERS + " ("
                 + COLUMN_USERS_USERNAME + ", "
@@ -646,14 +651,36 @@ public class dataSource {
             return false;
         }
     }
+
+    public users getUserByPhone(String phone) throws SQLException {
+
+        PreparedStatement preparedStatement = conn
+                .prepareStatement("SELECT * FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_PHONE + " = ?");
+        preparedStatement.setString(1, phone);
+        ResultSet results = preparedStatement.executeQuery();
+
+        users user = new users();
+        if (results.next()) {
+            user.setUsers_id(results.getInt("users_id"));
+            user.setUsers_username(results.getString("users_username"));
+            user.setUsers_password(results.getString("users_password"));
+            user.setUsers_fullname(results.getString("users_fullname"));
+            user.setUsers_phone(results.getString("users_phone"));
+            user.setUsers_address(results.getString("users_address"));
+            user.setUsers_description(results.getString("user_description"));
+        }
+
+        return user;
+    }
+
     /***************************
-     *      END USER QUERRY    *
+     * END USER QUERRY *
      ****************************/
 
-     /***************************
-     *     BEGIN ODERS QUERRY   *
+    /***************************
+     * BEGIN ODERS QUERRY *
      ****************************/
-     /**
+    /**
      * This method gets all orders from the database.
      */
     public List<orders> getAllOrders(int sortOrder) {
@@ -668,8 +695,7 @@ public class dataSource {
                 TABLE_ORDERS + "." + COLUMN_ORDERS_PAY_STATUS + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_NAME + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_PRICE +
-                " FROM " + TABLE_ORDERS
-        );
+                " FROM " + TABLE_ORDERS);
 
         queryOrders.append("" +
                 " LEFT JOIN " + TABLE_PRODUCT +
@@ -691,7 +717,7 @@ public class dataSource {
         }
 
         try (Statement statement = conn.createStatement();
-             ResultSet results = statement.executeQuery(queryOrders.toString())) {
+                ResultSet results = statement.executeQuery(queryOrders.toString())) {
 
             List<orders> orders = new ArrayList<>();
             while (results.next()) {
@@ -711,6 +737,7 @@ public class dataSource {
             return null;
         }
     }
+
     /**
      * This method gets all orders of the simple user from the database.
      */
@@ -726,8 +753,7 @@ public class dataSource {
                 TABLE_ORDERS + "." + COLUMN_ORDERS_PAY_STATUS + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_NAME + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_PRICE +
-                " FROM " + TABLE_ORDERS
-        );
+                " FROM " + TABLE_ORDERS);
 
         queryOrders.append("" +
                 " LEFT JOIN " + TABLE_PRODUCT +
@@ -737,7 +763,7 @@ public class dataSource {
                 " LEFT JOIN " + TABLE_USERS +
                 " ON " + TABLE_ORDERS + "." + COLUMN_ORDERS_USERS_ID +
                 " = " + TABLE_USERS + "." + COLUMN_USERS_ID);
-                queryOrders.append(" WHERE " + TABLE_ORDERS + "." + COLUMN_ORDERS_USERS_ID + " = ").append(user_id);
+        queryOrders.append(" WHERE " + TABLE_ORDERS + "." + COLUMN_ORDERS_USERS_ID + " = ").append(user_id);
 
         if (sortOrder != ORDER_BY_NONE) {
             queryOrders.append(" ORDER BY ");
@@ -750,7 +776,7 @@ public class dataSource {
         }
 
         try (Statement statement = conn.createStatement();
-             ResultSet results = statement.executeQuery(queryOrders.toString())) {
+                ResultSet results = statement.executeQuery(queryOrders.toString())) {
 
             List<orders> orders = new ArrayList<>();
             while (results.next()) {
@@ -770,10 +796,12 @@ public class dataSource {
             return null;
         }
     }
+
     /**
      * This method insert one order to the database.
      */
-    public boolean insertNewOrder(int product_id, int user_id, int customer_id, Date order_date, String order_pay_status) {
+    public boolean insertNewOrder(int product_id, int user_id, int customer_id, Date order_date,
+            String order_pay_status) {
 
         String sql = "INSERT INTO " + TABLE_ORDERS + " ("
                 + COLUMN_ORDERS_PRODUCT_ID + ", "
@@ -797,15 +825,16 @@ public class dataSource {
             return false;
         }
     }
-     /***************************
-     *     END ODERS QUERRY     *
+
+    /***************************
+     * END ODERS QUERRY *
      ****************************/
-     /**
-      * This method counts all the products on the database.
+    /**
+     * This method counts all the products on the database.
      */
     public Integer countAllProducts() {
         try (Statement statement = conn.createStatement();
-             ResultSet results = statement.executeQuery("SELECT COUNT(*) FROM " + TABLE_PRODUCT)) {
+                ResultSet results = statement.executeQuery("SELECT COUNT(*) FROM " + TABLE_PRODUCT)) {
             if (results.next()) {
                 return results.getInt(1);
             } else {
@@ -816,14 +845,13 @@ public class dataSource {
             return 0;
         }
     }
+
     /**
      * This method counts all the simple users on the database.
      */
     public Integer countAllCustomers() {
         try (Statement statement = conn.createStatement();
-             ResultSet results = statement.executeQuery("SELECT COUNT(*) FROM " + TABLE_CUSTOMER
-        )
-        ) {
+                ResultSet results = statement.executeQuery("SELECT COUNT(*) FROM " + TABLE_CUSTOMER)) {
             if (results.next()) {
                 return results.getInt(1);
             } else {
@@ -834,12 +862,14 @@ public class dataSource {
             return 0;
         }
     }
+
     /**
      * This method counts all the orders on the database.
      */
     public Integer countUserOrders(int user_id) {
 
-        try (PreparedStatement statement = conn.prepareStatement(String.valueOf("SELECT COUNT(*) FROM " + TABLE_ORDERS + " WHERE " + COLUMN_ORDERS_USERS_ID + "= ?"))) {
+        try (PreparedStatement statement = conn.prepareStatement(
+                String.valueOf("SELECT COUNT(*) FROM " + TABLE_ORDERS + " WHERE " + COLUMN_ORDERS_USERS_ID + "= ?"))) {
             statement.setInt(1, user_id);
             ResultSet results = statement.executeQuery();
 
@@ -853,6 +883,5 @@ public class dataSource {
             return 0;
         }
     }
-
 
 }

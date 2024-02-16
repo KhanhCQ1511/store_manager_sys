@@ -31,7 +31,7 @@ public class loginController {
      * instance
      * and transitions the user screen to the appropriate dashboard.
      */
-    public void loginButtonAction(ActionEvent event) throws SQLException, IOException {
+    public void handleLoginButtonAction(ActionEvent event) throws SQLException, IOException {
         String username = usernameField.getText();
         String providedPassword = passwordField.getText();
         // check if username or provided password is already
@@ -59,9 +59,9 @@ public class loginController {
                     dialogStage = (Stage) node.getScene().getWindow();
                     dialogStage.close();
                     if (user.getUsers_username() != "admin") {
-                        scene = new Scene(FXMLLoader.load(getClass().getResource("../view/user/main-dashboard.fxml")));
+                        scene = new Scene(FXMLLoader.load(getClass().getResource("/source/view/user/main-dashboard.fxml")));
                     } else if (user.getUsers_username() == "admin") {
-                        scene = new Scene(FXMLLoader.load(getClass().getResource("../view/admin/main-dashboard.fxml")));
+                        scene = new Scene(FXMLLoader.load(getClass().getResource("/source/view/user/main-dashboard.fxml")));
                     }
                     dialogStage.setScene(scene);
                     dialogStage.show();
@@ -80,7 +80,7 @@ public class loginController {
         Node node = (Node) actionEvent.getSource();
         dialogStage = (Stage) node.getScene().getWindow();
         dialogStage.close();
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/view/register.fxml")));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/source/view/register.fxml")));
         dialogStage.setScene(scene);
         dialogStage.show();
     }

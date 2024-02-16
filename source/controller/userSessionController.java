@@ -101,6 +101,15 @@ public class userSessionController{
         userSessionController.userAdminstrator = userAdminstrator;
     }
     
+    public static void cleanUserSession() {
+        userId = 0;
+        userUsername = null;
+        userPassword = null;
+        userFullname = null;
+        userPhone = null;
+        userAddress = null;
+        userDescription = null;
+    }
 
     
 }

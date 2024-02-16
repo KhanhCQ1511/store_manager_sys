@@ -47,6 +47,10 @@ public class helperMethods {
         return password.matches("^.{6,16}$");
     }
 
+    public static boolean validatePhone(String phone){
+        return phone.matches("^\\d{10}$");
+    }
+
     public static boolean validateProductQuantity(String integer) {
         return integer.matches("-?(0|[1-9]\\d*)");
     }

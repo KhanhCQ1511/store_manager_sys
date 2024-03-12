@@ -16,7 +16,7 @@ public class addProductsController extends productsController {
     @FXML
     public ComboBox<categories> fieldAddProductCategoriesId;
     @FXML
-    public ComboBox<distributor> fieldAddProductDistributor;
+    public ComboBox<distributor> fieldAddProductDistributorId;
     public TextField fieldAddProductsCode;
     public TextField fieldAddProductsName;
     public TextField fieldAddProductsSize;
@@ -27,21 +27,27 @@ public class addProductsController extends productsController {
 
     @FXML
     private void initialize(){
-        fieldAddProductCategoriesId.setItems(FXCollections.observableArrayList(dataSource.getInstance().getProductCategories(dataSource.ORDER_BY_ASC)));
+        if (fieldAddProductCategoriesId != null) {
+            fieldAddProductCategoriesId.setItems(FXCollections.observableArrayList(dataSource.getInstance().getProductCategories(dataSource.ORDER_BY_ASC)));
+        }
+        if (fieldAddProductDistributorId != null) {
+            fieldAddProductDistributorId.setItems(FXCollections.observableArrayList(dataSource.getInstance().getProductDistributor(dataSource.ORDER_BY_ASC)));
+        }
         TextFormatter<Double> textFormatterDouble = formatDoubleField();
         TextFormatter<Integer> textFormatterInteger = formatIntField();
         fieldAddProductsPrice.setTextFormatter(textFormatterDouble);
         fieldAddProductsQuantity.setTextFormatter(textFormatterInteger);
     }
+    
 
     /*
      * This private method handles the add product button functionality.
-     * It validates user input fields and adds the values to the database.
+     * It validates user input fields and adds the values to the database. done
      */
     @FXML
-    private void addProductsOnAction(){
+    public void btnAddProductsOnAction(){
         categories category = fieldAddProductCategoriesId.getSelectionModel().getSelectedItem();
-        distributor distributor = fieldAddProductDistributor.getSelectionModel().getSelectedItem();
+        distributor distributor = fieldAddProductDistributorId.getSelectionModel().getSelectedItem();
         int categories_id = 0;
         if (category != null) {
             categories_id = category.getCategories_id();
@@ -61,16 +67,15 @@ public class addProductsController extends productsController {
             String productsDescription = fieldAddProductsDescription.getText();
             int productsCategoryId = category.getCategories_id();
             int productsDistributorId = distributor.getDistributor_id();
+            System.out.println(productsCode+productsName+productsSize+productsPrice+productsQuantity+productsDescription+productsCategoryId+productsDistributorId);
 
             Task<Boolean> addProductsTask = new Task<Boolean>() {
-
                 @Override
                 protected Boolean call() throws Exception {
                     return dataSource.getInstance().insertNewProduct(productsCode, productsName, productsSize, productsPrice, productsQuantity , productsDescription, productsCategoryId ,productsDistributorId);
                 }
-                
             };
-            addProductsTask.setOnScheduled(e ->{
+            addProductsTask.setOnSucceeded(e ->{
                 if (addProductsTask.valueProperty().get()) {
                     viewProductsResponse.setVisible(true);
                     System.out.println("Added new product successfully!");

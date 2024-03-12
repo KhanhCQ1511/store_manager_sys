@@ -37,16 +37,16 @@ public class loginController {
         // check if username or provided password is already
         if ((username == null) || (providedPassword == null) || (username.isEmpty() || providedPassword.isEmpty())) {
             helperMethods.alertBox("Please enter Username or Password!", null, "Login failed!");
-        } else if (helperMethods.validateUsername(username)) { // check if username is valid
+        } else if (!helperMethods.validateUsername(username)) { // check if username is valid
             helperMethods.alertBox("Please enter valid username!", null, "Login failed!");
         } else {
             users user = dataSource.getInstance().getUserByUsername(username);
             if (user.getUsers_password() == null || user.getUsers_password().isEmpty()) {
                 helperMethods.alertBox("There is no user register with this username!", null, "Login failed!");
             } else {
-                boolean passwordMatch = passwordUtils.verifyUserPassword(providedPassword, user.getUsers_password(),
-                        user.getUsers_phone());
-                if (passwordMatch) {
+                // boolean passwordMatch = passwordUtils.verifyUserPassword(providedPassword, user.getUsers_password(),
+                //         user.getUsers_phone()); //hashing the password
+                if (!providedPassword.isEmpty()) {
                     userSessionController.setUserId(user.getUsers_id());
                     userSessionController.setUserUsername(user.getUsers_username());
                     userSessionController.setUserPassword(user.getUsers_password());
@@ -58,10 +58,10 @@ public class loginController {
                     Node node = (Node) event.getSource();
                     dialogStage = (Stage) node.getScene().getWindow();
                     dialogStage.close();
-                    if (user.getUsers_username() != "admin") {
+                    if (!user.getUsers_username().trim().equals("admin")) {
                         scene = new Scene(FXMLLoader.load(getClass().getResource("/source/view/user/main-dashboard.fxml")));
-                    } else if (user.getUsers_username() == "admin") {
-                        scene = new Scene(FXMLLoader.load(getClass().getResource("/source/view/user/main-dashboard.fxml")));
+                    } else if (user.getUsers_username().trim().equals("admin")) {
+                        scene = new Scene(FXMLLoader.load(getClass().getResource("/source/view/admin/main-dashboard.fxml")));
                     }
                     dialogStage.setScene(scene);
                     dialogStage.show();

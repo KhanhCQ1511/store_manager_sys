@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.collections.*?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="source.controller.admin.pages.products.viewProductsController">
     <BorderPane layoutX="14.0" layoutY="14.0">
+        <top>
+            <Text fx:id="viewProductsCode" strokeType="OUTSIDE" strokeWidth="0.0" text="View product data" BorderPane.alignment="CENTER_LEFT">
+                <font>
+                    <Font size="24.0"/>
+                </font>
+            </Text>
+        </top>
         <center>
-            <GridPane fx:id="formViewProductView" alignment="CENTER_RIGHT" prefHeight="332.0" prefWidth="712.0">
+            <GridPane fx:id="formEditProductsView" alignment="CENTER_RIGHT" prefHeight="332.0" prefWidth="712.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="148.0"/>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="603.0" minWidth="10.0" prefWidth="279.0"/>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="603.0" minWidth="10.0" prefWidth="140.0"/>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="603.0" minWidth="10.0" prefWidth="146.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="603.0" minWidth="10.0" prefWidth="215.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="603.0" minWidth="10.0" prefWidth="215.0"/>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="603.0" minWidth="10.0" prefWidth="215.0"/>
                 </columnConstraints>
                 <rowConstraints>
@@ -23,34 +30,56 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 </rowConstraints>
-                <Label text="Product Name"/>
-                <TextField fx:id="fieldViewProductName" GridPane.columnIndex="1"/>
-                <Label text="Product Price" GridPane.columnIndex="3"/>
-                <TextField fx:id="fieldViewProductPrice" GridPane.columnIndex="4"/>
-                <Label text="Quantity" GridPane.rowIndex="1"/>
-                <TextField fx:id="fieldViewProductQuantity" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label text="Category" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                <ComboBox fx:id="fieldViewProductCategoryId" GridPane.columnIndex="4" GridPane.rowIndex="1">
+
+                <!-- Labels and TextFields for product details -->
+                <Label text="Product Code" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="fieldViewProductsCode" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Product Name" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="fieldViewProductsName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Product Size" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="fieldViewProductsSize" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Product Price" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+                <TextField fx:id="fieldViewProductsPrice" GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+
+                <Label text="Quantity" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <TextField fx:id="fieldViewProductsQuantity" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                <Label text="Category" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+                <ComboBox fx:id="fieldViewProductCategoryId" GridPane.rowIndex="4" GridPane.columnIndex="3">
                     <items>
+                        <!-- Replace this static data with dynamic data from the controller -->
+                        <!-- You can bind this to an ObservableList<Category> in the controller -->
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="1"/>
-                            <String fx:value="2"/>
-                            <String fx:value="3"/>
+                            <String fx:value="Category 1"/>
+                            <String fx:value="Category 2"/>
+                            <String fx:value="Category 3"/>
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <Label text="Description" GridPane.rowIndex="2"/>
-                <TextArea fx:id="fieldViewProductDescription" prefHeight="200.0" prefWidth="522.0"
-                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="Distributor" GridPane.rowIndex="5" GridPane.columnIndex="2"/>
+                <ComboBox fx:id="fieldViewProductDistributorId" GridPane.rowIndex="5" GridPane.columnIndex="3">
+                    <items>
+                        <!-- Replace this static data with dynamic data from the controller -->
+                        <!-- You can bind this to an ObservableList<Category> in the controller -->
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Distributor 1"/>
+                            <String fx:value="Distributor 2"/>
+                            <String fx:value="Distributor 3"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <Label text="Description" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                <TextArea fx:id="fieldViewProductsDescription" prefHeight="200.0" prefWidth="522.0"
+                          GridPane.rowIndex="6" GridPane.columnIndex="1"/>
             </GridPane>
         </center>
-        <top>
-            <Text fx:id="viewProductName" strokeType="OUTSIDE" strokeWidth="0.0" text="View product data" BorderPane.alignment="CENTER_LEFT">
-                <font>
-                    <Font size="24.0"/>
-                </font>
-            </Text>
-        </top>
     </BorderPane>
 </AnchorPane>

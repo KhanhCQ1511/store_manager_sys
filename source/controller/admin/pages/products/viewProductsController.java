@@ -16,6 +16,7 @@ import source.src.product;
 public class viewProductsController extends productsController{
     @FXML
     public TextField fieldViewProductsCode;
+    @FXML
     public TextField fieldViewProductsName;
     public TextField fieldViewProductsSize;
     public TextField fieldViewProductsPrice;
@@ -23,9 +24,10 @@ public class viewProductsController extends productsController{
     public ComboBox<categories> fieldViewProductCategoriesId;
     public ComboBox<distributor> fieldViewProductDistributorId;
     public TextArea fieldViewProductsDescription;
+    @FXML
     public Text viewProductsCode;
 
-     @FXML
+    @FXML
     private void initialize() {
         fieldViewProductCategoriesId.setItems(FXCollections.observableArrayList(dataSource.getInstance().getProductCategories(dataSource.ORDER_BY_ASC)));
     }

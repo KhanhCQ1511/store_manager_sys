@@ -23,7 +23,7 @@ public class helperMethods {
         // until it reaches the end and that is represented with $
         // {4, 29} # 5-30 character constraint given, minus the predefined first
         // character
-        Matcher matcher = Pattern.compile("^[A-Za-z]\\w{4,29}$", Pattern.CASE_INSENSITIVE).matcher(username);
+        Matcher matcher = Pattern.compile("(?![0-9])[A-Za-z0-9]{4,29}$|^admin$", Pattern.CASE_INSENSITIVE).matcher(username);
         return matcher.find();
     }
 
@@ -52,11 +52,11 @@ public class helperMethods {
     }
 
     public static boolean validateProductQuantity(String integer) {
-        return integer.matches("-?(0|[1-9]\\d*)");
+        return integer.matches("");
     }
 
     public static boolean validateProductPrice(String productPrice) {
-        return productPrice.matches("^[0-9]+(|\\.)[0-9]+$");
+        return productPrice.matches("^[0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+$");
     }
 
     public static void alertBox(String infoMessage, String headerText, String title) {

@@ -15,22 +15,24 @@ import source.src.distributor;
 import source.src.product;
 
 public class editProductsController extends productsController {
-    @FXML
     public Text viewProductsResponse;
     public TextField fieldEditProductsCode;
     public TextField fieldEditProductsName;
     public TextField fieldEditProductsSize;
     public TextField fieldEditProductsPrice;
     public TextField fieldEditProductsQuantity;
+    @FXML
     public ComboBox<categories> fieldEditProductCategoriesId;
+    @FXML
     public ComboBox<distributor> fieldEditProductDistributorId;
     public TextArea fieldEditProductsDescription;
+    @FXML
     public Text viewProductsCode;
 
     @FXML
     private void initialize() {
         fieldEditProductCategoriesId.setItems(FXCollections.observableArrayList(dataSource.getInstance().getProductCategories(dataSource.ORDER_BY_ASC)));
-
+        fieldEditProductDistributorId.setItems(FXCollections.observableArrayList(dataSource.getInstance().getProductDistributor(dataSource.ORDER_BY_ASC)));
         TextFormatter<Double> textFormatterDouble = formatDoubleField();
         TextFormatter<Integer> textFormatterInt = formatIntField();
         fieldEditProductsPrice.setTextFormatter(textFormatterDouble);
@@ -65,18 +67,19 @@ public class editProductsController extends productsController {
             String productsDescription = fieldEditProductsDescription.getText();
             int productsCategoriesId = category.getCategories_id();
             int productsDistributorId = distributor.getDistributor_id();
+            String oldCode = viewProductsCode.getText().replace("Editing: ", "");
 
             Task<Boolean> addProductTask = new Task<Boolean>() {
                 @Override
                 protected Boolean call() {
-                    return dataSource.getInstance().updateOneProduct(productsCode, productsName, productsSize, productsPrice, productsQuantity, productsDescription, productsCategoriesId, productsDistributorId);
+                    return dataSource.getInstance().updateOneProduct(productsCode, productsName, productsSize, productsPrice, productsQuantity, productsDescription, productsCategoriesId, productsDistributorId, oldCode);
                 }
             };
 
             addProductTask.setOnSucceeded(e -> {
                 if (addProductTask.valueProperty().get()) {
                     viewProductsResponse.setVisible(true);
-                    System.out.println("Product edited!");
+                    System.out.println("Done product edited!");
                 }
             });
 

@@ -54,7 +54,7 @@ public class productsController {
                 return FXCollections.observableArrayList(dataSource.getInstance().getAllProducts(dataSource.ORDER_BY_NONE));
             }
         };
-
+        System.out.println(getAllProductsTask.valueProperty().getValue());
         tableProductsPage.itemsProperty().bind(getAllProductsTask.valueProperty());
         addActionButtonsToTable();
         new Thread(getAllProductsTask).start();
@@ -125,7 +125,7 @@ public class productsController {
 
                     {
                         buttonsPane.setSpacing(10);
-                        buttonsPane.getChildren().add(viewButton);
+                        // buttonsPane.getChildren().add(viewButton);
                         buttonsPane.getChildren().add(editButton);
                         buttonsPane.getChildren().add(deleteButton);
                     }
@@ -154,16 +154,14 @@ public class productsController {
     @FXML
     private void btnAddProductOnClick() {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        try {
-            fxmlLoader.load(getClass().getResource("/sources/view/admin/pages/products/add_products.fxml").openStream());
+        try{
+            fxmlLoader.load(getClass().getResource("/source/view/admin/pages/products/add_products.fxml").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         AnchorPane root = fxmlLoader.getRoot();
         productsContent.getChildren().clear();
         productsContent.getChildren().add(root);
-
     }
 
     /**
@@ -174,7 +172,7 @@ public class productsController {
     private void btnEditProduct(int product_id) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         try {
-            fxmlLoader.load(getClass().getResource("/sources/view/admin/pages/products/edit_products.fxml").openStream());
+            fxmlLoader.load(getClass().getResource("/source/view/admin/pages/products/edit_products.fxml").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,9 +191,10 @@ public class productsController {
      */
     @FXML
     private void btnViewProduct(int product_id){
+        System.out.println("Product ID: " + product_id);
         FXMLLoader fxmlLoader = new FXMLLoader();
         try {
-            fxmlLoader.load(getClass().getResource("/sources/view/admin/pages/products/view_products.fxml").openStream());
+            fxmlLoader.load(getClass().getResource("/source/view/admin/pages/products/view_products.fxml").openStream());
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -228,6 +227,7 @@ public class productsController {
     /*
      * This method check user input field for product
      */
+    @FXML
     protected boolean areProductsInputValid(String fieldAddProductsCode, String fieldAddProductsName, String fieldAddProductsSize, String fieldAddProductsPrice, String fieldAddProductsQuantity, String fieldAddProductsDescription, int productsCategoriesId, int productsDistributorId){
         String errorMessage = "";
         if(productsCategoriesId == 0){
@@ -236,10 +236,10 @@ public class productsController {
         if (productsDistributorId == 0) {
             errorMessage += "Not valid distributor id!\n";
         }
-        if (fieldAddProductsCode == null | fieldAddProductsCode.length() != 12) {
+        if (fieldAddProductsCode == null /*| fieldAddProductsCode.length() != 12 */) {
             errorMessage += "Not valid product code!\n";
         }
-        if (fieldAddProductsName == null || fieldAddProductsName.length() < 5) {
+        if (fieldAddProductsName == null) {
             errorMessage += "Not valid product name!\n";
         }
         if (fieldAddProductsSize == null){

@@ -59,7 +59,7 @@ public class mainDashboardController implements Initializable {
      * This method handles the Product button click.
      * It loads the product page and it's contents.
      */
-    public void btnProductOnClick(ActionEvent actionEvent){
+    public void btnProductsOnClick(ActionEvent actionEvent){
         FXMLLoader fxmlLoader = loadFXMLPage("/source/view/admin/pages/products/products.fxml");
         productsController controller = fxmlLoader.getController();
         controller.listProducts();
@@ -131,12 +131,20 @@ public class mainDashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblUserName.setText(userSessionController.getUserFullname());
-
-        FXMLLoader fxmlLoader = loadFXMLPage("/source/view/admin/pages/home/home.fxml");
-        homeController homeController = fxmlLoader.getController();
-        homeController.getDashboardProductCount();
-        homeController.getDashboardCostCount();
+        if (userSessionController.getUserFullname() != null && lblUserName != null) {
+            String username = userSessionController.getUserFullname();
+            if (username != null) {
+                lblUserName.setText(username);
+                FXMLLoader fxmlLoader = loadFXMLPage("/source/view/admin/pages/home/home.fxml");
+                homeController homeController = fxmlLoader.getController();
+                homeController.getDashboardProductCount();
+                homeController.getDashboardCostCount();
+            } else {
+                System.err.println("User full name is null.");
+            }
+        } else {
+            System.err.println("userSessionController or lblUserName is null. Make sure they are properly initialized.");
+        }
     }
     
 }

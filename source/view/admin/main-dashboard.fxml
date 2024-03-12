@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #fff;" stylesheets="@../../resource/css/dashboard.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="source.controller.admin.mainDashboardController">
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #fff;" stylesheets="@../resource/css/dashboard.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="source.controller.admin.mainDashboardController">
     <StackPane layoutY="-9.0" prefHeight="800.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
@@ -45,7 +45,7 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                             <ImageView fitHeight="50.0" fitWidth="120.0" preserveRatio="true">
                                 <image>
-                                    <Image url="@../resources/img/brand/sm-logo-admin.png" />
+                                    <Image url="@../resource/img/sm-logo-admin.png" />
                                 </image>
                                 <HBox.margin>
                                     <Insets left="10.0" />
@@ -55,9 +55,9 @@
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                         </AnchorPane>
                         <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0" GridPane.columnIndex="2">
-                            <Label alignment="TOP_RIGHT" text="Hi " textAlignment="RIGHT">
+                            <Label alignment="TOP_RIGHT" text="Hi, " textAlignment="RIGHT">
                             </Label>
-                            <Label fx:id="lblUsrName" alignment="TOP_RIGHT" textAlignment="RIGHT">
+                            <Label fx:id="lblUserName" alignment="TOP_RIGHT" textAlignment="RIGHT">
                             </Label>
                             <Button fx:id="lblLogOut" contentDisplay="TOP" layoutY="300.0" mnemonicParsing="false" onAction="#btnLogOutOnClick" styleClass="button, xs, danger" text="Log Out">
                                 <HBox.margin>

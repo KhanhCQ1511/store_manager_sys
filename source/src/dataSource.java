@@ -14,7 +14,7 @@ public class dataSource {
     public static final String DB_Name = "store_manager";
     String username = "root";
     String password = "15112003";
-    public static final String CONNECTION_STRING = "jdbc:mySQL://localhost:3306/" + DB_Name;
+    public static final String CONNECTION_STRING = "jdbc:mySQL://localhost:3306/store_manager";
 
     // All the database tables and their columns are stored as String variables
     // table users
@@ -25,7 +25,7 @@ public class dataSource {
     public static final String COLUMN_USERS_FULLNAME = "users_fullname";
     public static final String COLUMN_USERS_PHONE = "users_phone";
     public static final String COLUMN_USERS_ADDRESS = "users_address";
-    public static final String COLUMN_USERS_DESCRIPTION = "users_description";
+    public static final String COLUMN_USERS_DESCRIPTION = "user_description";
     // table customer
     public static final String TABLE_CUSTOMER = "customer";
     public static final String COLUMN_CUSTOMER_ID = "customer_id";
@@ -118,36 +118,38 @@ public class dataSource {
      ****************************/
     /**
      * This private method returns an default query for the products.
-     * note: fix as in findProduct **
+     * note: fix as in findProduct  done**
      */
     private StringBuilder querryProducts() {
         return new StringBuilder("SELECT " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_ID + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_CODE + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_NAME + ", " +
-                TABLE_PRODUCT + "." + COLUMN_PRODUCT_PRICE + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_SIZE + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_PRICE + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_QUANTITY + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_DESCRIPTION + ", " +
+                TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_ID + ", "+
+                TABLE_DISTRIBUTOR + "." + COLUMN_DISTRIBUTOR_ID + ", "+
                 TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_NAME + ", " +
-                " (SELECT COUNT(*) FROM " + TABLE_ORDERS + " WHERE " + TABLE_ORDERS + "." + COLUMN_ORDERS_PRODUCT_ID
-                + " = " + TABLE_PRODUCT + "." + COLUMN_PRODUCT_ID + ") AS nr_sales" + ", " +
-                TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_ID +
+                TABLE_DISTRIBUTOR + "." + COLUMN_DISTRIBUTOR_NAME +
                 " FROM " + TABLE_PRODUCT +
                 " LEFT JOIN " + TABLE_CATEGORIES +
                 " ON " + TABLE_PRODUCT + "." + COLUMN_PRODUCT_CATEGORIES_ID +
-                " = " + TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_ID);
+                " = " + TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_ID+
+                " LEFT JOIN " + TABLE_DISTRIBUTOR +
+                " ON " + TABLE_PRODUCT + "." + COLUMN_PRODUCT_DISTRIBUTOR_ID +
+                " = " + TABLE_DISTRIBUTOR + "." + COLUMN_DISTRIBUTOR_ID);
     }
 
     /*
-     * Get all products from the database
+     * Get all products from the database, done
      */
     public List<product> getAllProducts(int sortOrder) {
         StringBuilder querryProducts = querryProducts();
         if (sortOrder != ORDER_BY_NONE) {
             querryProducts.append(" ORDER BY ");
-            querryProducts.append(COLUMN_PRODUCT_NAME);
+            querryProducts.append(COLUMN_PRODUCT_CODE);
             if (sortOrder == ORDER_BY_DESC) {
                 querryProducts.append(" DESC");
             } else {
@@ -168,6 +170,8 @@ public class dataSource {
                 newProducts.setProduct_description(rs.getString(7));
                 newProducts.setCategories_id(rs.getInt(8));
                 newProducts.setDistributor_id(rs.getInt(9));
+                newProducts.setCategories_name(rs.getString(10));
+                newProducts.setDistributor_name(rs.getString(11));
                 products.add(newProducts);
             }
             return products;
@@ -179,7 +183,7 @@ public class dataSource {
 
     /**
      * This method get one product from the database based on the provided
-     * product_id.
+     * product_id. done
      */
     public List<product> getOneProduct(int product_id) {
         StringBuilder queryProducts = querryProducts();
@@ -197,8 +201,8 @@ public class dataSource {
                 newProducts.setProduct_price(rs.getString(5));
                 newProducts.setProduct_quantity(rs.getString(6));
                 newProducts.setProduct_description(rs.getString(7));
-                newProducts.setCategories_id(rs.getInt(8));
-                newProducts.setDistributor_id(rs.getInt(9));
+                newProducts.setCategories_name(rs.getString(10));
+                newProducts.setDistributor_name(rs.getString(11));
                 products.add(newProducts);
             }
             return products;
@@ -211,7 +215,7 @@ public class dataSource {
 
     /**
      * This method searches products from the database based on the provided
-     * searchString.
+     * searchString.  done
      */
     public List<product> searchProducts(String searchString, int sortOrder) {
         StringBuilder queryProducts = querryProducts();
@@ -243,8 +247,8 @@ public class dataSource {
                 newProducts.setProduct_price(rs.getString(5));
                 newProducts.setProduct_quantity(rs.getString(6));
                 newProducts.setProduct_description(rs.getString(7));
-                newProducts.setCategories_id(rs.getInt(8));
-                newProducts.setDistributor_id(rs.getInt(9));
+                newProducts.setCategories_name(rs.getString(10));
+                newProducts.setDistributor_name(rs.getString(11));
                 products.add(newProducts);
             }
             return products;
@@ -256,7 +260,7 @@ public class dataSource {
     }
 
     /**
-     * This method deletes one product based on the productId provided.
+     * This method deletes one product based on the productId provided. done
      */
     public boolean deleteSingleProduct(int productId) {
         String sql = "DELETE FROM " + TABLE_PRODUCT + " WHERE " + COLUMN_PRODUCT_ID + " = ?";
@@ -273,7 +277,7 @@ public class dataSource {
     }
 
     /**
-     * This method insert one product to the database.
+     * This method insert one product to the database. done
      */
     public boolean insertNewProduct(String code, String name, String size, double price, int quantity,
             String description, int category_id, int distributor_id) {
@@ -308,10 +312,10 @@ public class dataSource {
     }
 
     /**
-     * This method updates one product to the database.
+     * This method updates one product to the database. done
      */
     public boolean updateOneProduct(String code, String name, String size, double price, int quantity,
-            String description, int category_id, int distributor_id) {
+            String description, int category_id, int distributor_id, String oldCode) {
 
         String sql = "UPDATE " + TABLE_PRODUCT + " SET "
                 + COLUMN_PRODUCT_CODE + " = ?" + ", "
@@ -322,7 +326,7 @@ public class dataSource {
                 + COLUMN_PRODUCT_DESCRIPTION + " = ?" + ", "
                 + COLUMN_PRODUCT_CATEGORIES_ID + " = ?" + ", "
                 + COLUMN_PRODUCT_DISTRIBUTOR_ID + " = ?" +
-                " WHERE " + COLUMN_PRODUCT_ID + " = ?";
+                " WHERE " + COLUMN_PRODUCT_CODE + " = ?";
 
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, code);
@@ -333,6 +337,7 @@ public class dataSource {
             statement.setString(6, description);
             statement.setInt(7, category_id);
             statement.setInt(8, distributor_id);
+            statement.setString(9, oldCode);
 
             statement.executeUpdate();
             return true;
@@ -369,15 +374,11 @@ public class dataSource {
     /**
      * This method gets all the product categories from the database.
      * 
-     * @param sortOrder Results sort order.
-     * @return List Returns Categories array list.
-     * @since 1.0.0
      */
     public List<categories> getProductCategories(int sortOrder) {
         StringBuilder queryCategories = new StringBuilder("SELECT " +
                 TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_ID + ", " +
-                TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_NAME + ", " +
-                TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_DESCRIPTION +
+                TABLE_CATEGORIES + "." + COLUMN_CATEGORIES_NAME +
                 " FROM " + TABLE_CATEGORIES);
 
         if (sortOrder != ORDER_BY_NONE) {
@@ -411,6 +412,40 @@ public class dataSource {
     /***************************
      * END CATEGORIES QUERRY *
      ****************************/
+
+     public List<distributor> getProductDistributor(int sortOrder) {
+        StringBuilder queryDistributor = new StringBuilder("SELECT " +
+                TABLE_DISTRIBUTOR + "." + COLUMN_DISTRIBUTOR_ID + ", " +
+                TABLE_DISTRIBUTOR + "." + COLUMN_DISTRIBUTOR_NAME +
+                " FROM " + TABLE_DISTRIBUTOR);
+
+        if (sortOrder != ORDER_BY_NONE) {
+            queryDistributor.append(" ORDER BY ");
+            queryDistributor.append(COLUMN_DISTRIBUTOR_ID);
+            if (sortOrder == ORDER_BY_DESC) {
+                queryDistributor.append(" DESC");
+            } else {
+                queryDistributor.append(" ASC");
+            }
+        }
+
+        try (Statement statement = conn.createStatement();
+                ResultSet results = statement.executeQuery(queryDistributor.toString())) {
+
+            List<distributor> dList = new ArrayList<>();
+            while (results.next()) {
+                distributor distributor = new distributor();
+                distributor.setDistributor_id(results.getInt(1));
+                distributor.setDistributor_name(results.getString(2));
+                dList.add(distributor);
+            }
+            return dList;
+
+        } catch (SQLException e) {
+            System.out.println("Query failed: " + e.getMessage());
+            return null;
+        }
+    }
 
     /***************************
      * BEGIN CUSTOMER QUERRY *

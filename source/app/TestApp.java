@@ -18,7 +18,8 @@ public class TestApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         try{
-            Parent root = FXMLLoader.load(getClass().getResource("/source/view/admin/pages/products/products.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/source/view/login.fxml"));
+            // Parent root = FXMLLoader.load(getClass().getResource("/source/view/admin/pages/products/add_products.fxml"));
             primaryStage.setTitle("Store Management System");
             primaryStage.getIcons().add(new Image("/source/view/resource/img/fav.png"));
             primaryStage.setScene(new Scene(root, 1280, 800));
@@ -26,8 +27,6 @@ public class TestApp extends Application {
         } catch(Exception e){
             e.printStackTrace();
         }
-        
-
     }
 
     /**

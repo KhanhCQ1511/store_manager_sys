@@ -5,7 +5,7 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="source.controller.admin.pages.customersController">
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="source.controller.admin.pages.customers.customersController">
     <StackPane fx:id="customersContent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <BorderPane prefHeight="521.0" prefWidth="743.0">
@@ -35,29 +35,19 @@
             <center>
                 <TableView fx:id="tableCustomersPage" editable="true" prefHeight="663.0" prefWidth="1220.0">
                     <columns>
-                        <TableColumn prefWidth="75.0" text="Name/Surname">
+                        <TableColumn prefWidth="75.0" text="Fullname">
                             <cellValueFactory>
-                                <PropertyValueFactory property="fullname"/>
+                                <PropertyValueFactory property="fieldViewCustomersFullname"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="75.0" text="Phone">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="fieldViewCustomersPhone"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn prefWidth="75.0" text="Email">
                             <cellValueFactory>
-                                <PropertyValueFactory property="email"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="75.0" text="Username">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="username"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="125.0" text="Orders">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="orders"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="125.0" text="Status">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="status"/>
+                                <PropertyValueFactory property="fieldViewCustomersEmail"/>
                             </cellValueFactory>
                         </TableColumn>
                     </columns>

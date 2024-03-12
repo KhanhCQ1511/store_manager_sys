@@ -1,4 +1,4 @@
-package source.controller.admin.pages;
+package source.controller.admin.pages.customers;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -68,10 +68,7 @@ public class customersController {
                         viewButton.getStyleClass().add("info");
                         viewButton.setOnAction((ActionEvent event) -> {
                             customer customerData = getTableView().getItems().get(getIndex());
-                            btnViewCustomer((int) customerData.getCustomer_id());
-                            System.out.println("View Customer");
-                            System.out.println("customer id: "+ customerData.getCustomer_id());
-                            System.out.println("customer name: "+ customerData.getCustomer_fullname());
+                            btnViewCustomer(customerData.getCustomer_id());
                         });
                     }
 
@@ -82,10 +79,7 @@ public class customersController {
                         editButton.getStyleClass().add("info");
                         editButton.setOnAction((ActionEvent event)->{
                             customer customerData = getTableView().getItems().get(getIndex());
-                            btnEditCustomer((int) customerData.getCustomer_id());
-                            System.out.println("Edit Customer");
-                            System.out.println("customer id: "+ customerData.getCustomer_id());
-                            System.out.println("customer name: "+ customerData.getCustomer_fullname());
+                            btnEditCustomer(customerData.getCustomer_id());
                         });
                     }
 
@@ -152,7 +146,8 @@ public class customersController {
         customersContent.getChildren().clear();
         customersContent.getChildren().add(root);
 
-        fillEditCustomer(customer_Id);
+        viewCustomersController controller = fxmlLoader.getController();
+        controller.fillViewCustomer(customer_Id);
     }
 
     /*
@@ -209,4 +204,6 @@ public class customersController {
         });
         new Thread(fillCustomerTask).start();
     }
+
+    
 }

@@ -19,9 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import source.controller.userSessionController;
-import source.controller.admin.pages.customersController;
 import source.controller.admin.pages.homeController;
 import source.controller.admin.pages.ordersController;
+import source.controller.admin.pages.customers.customersController;
 import source.controller.admin.pages.products.productsController;
 
 public class mainDashboardController implements Initializable {

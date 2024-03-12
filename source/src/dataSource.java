@@ -455,13 +455,11 @@ public class dataSource {
      */
     private StringBuilder queryCustomers() {
         return new StringBuilder("SELECT " +
-                TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ID + ", " +
                 TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_FULLNAME + ", " +
                 TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_PHONE + ", " +
                 TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_EMAIL + ", " +
-                TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_DESCRIPTION + ", " +
-                " (SELECT COUNT(*) FROM " + TABLE_CUSTOMER + " WHERE " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ID
-                + " = " + TABLE_USERS + "." + COLUMN_USERS_ID + ") AS customer");
+                TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_DESCRIPTION + 
+                " FROM " + TABLE_CUSTOMER);
     }
 
     /**
@@ -508,20 +506,19 @@ public class dataSource {
     public List<customer> getOneCustomer(int customer_id) {
 
         StringBuilder queryCustomers = queryCustomers();
-        queryCustomers.append(" AND " + TABLE_USERS + "." + COLUMN_USERS_ID + " = ?");
         try (PreparedStatement statement = conn.prepareStatement(String.valueOf(queryCustomers))) {
             statement.setInt(1, customer_id);
             ResultSet results = statement.executeQuery();
             List<customer> customers = new ArrayList<>();
             while (results.next()) {
                 customer customer = new customer();
-                customer.setCustomer_id(results.getInt(1));
                 customer.setCustomer_fullname(results.getString(2));
                 customer.setCustomer_phone(results.getString(3));
                 customer.setCustomer_email(results.getString(4));
                 customer.setCustomer_description(results.getString(5));
                 customers.add(customer);
             }
+            System.out.println(customers);
             return customers;
 
         } catch (SQLException e) {
@@ -811,7 +808,7 @@ public class dataSource {
             while (results.next()) {
                 orders order = new orders();
                 order.setOrders_id(results.getInt("orders_id"));
-                // order.setOrders_date(results.getDate("orders_date"));
+                order.setOrders_date(results.getTimestamp("orders_date"));
                 order.setOrders_pay_status(results.getString("orders_pay_status"));
                 order.setProduct_id(results.getInt("product_id"));
                 order.setCustomer_id(results.getInt("customer_id"));

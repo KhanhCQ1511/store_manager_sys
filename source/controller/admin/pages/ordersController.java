@@ -15,7 +15,6 @@ public class ordersController {
 
     public void listOrders(){
         Task<ObservableList<orders>> getAllOrdersTask = new Task<ObservableList<orders>>() {
-
             @Override
             protected ObservableList<orders> call() throws Exception {
                return FXCollections.observableArrayList(dataSource.getInstance().getAllOrders(dataSource.ORDER_BY_NONE));

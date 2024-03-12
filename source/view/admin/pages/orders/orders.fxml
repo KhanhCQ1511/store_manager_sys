@@ -44,24 +44,24 @@
                             <PropertyValueFactory property="product_name"/>
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn prefWidth="75.0" text="Price Paid">
-                        <cellValueFactory>
-                            <PropertyValueFactory property="order_price"/>
-                        </cellValueFactory>
-                    </TableColumn>
                     <TableColumn prefWidth="75.0" text="Order Date">
                         <cellValueFactory>
-                            <PropertyValueFactory property="order_date"/>
+                            <PropertyValueFactory property="orders_date"/>
                         </cellValueFactory>
                     </TableColumn>
                     <TableColumn prefWidth="75.0" text="Order Status">
                         <cellValueFactory>
-                            <PropertyValueFactory property="order_status"/>
+                            <PropertyValueFactory property="orders_pay_status"/>
                         </cellValueFactory>
                     </TableColumn>
                     <TableColumn prefWidth="75.0" text="Customer">
                         <cellValueFactory>
-                            <PropertyValueFactory property="user_full_name"/>
+                            <PropertyValueFactory property="customer_name"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn prefWidth="75.0" text="User">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="users_name"/>
                         </cellValueFactory>
                     </TableColumn>
                 </columns>

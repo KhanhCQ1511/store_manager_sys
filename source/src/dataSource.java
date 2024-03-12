@@ -109,7 +109,7 @@ public class dataSource {
                 conn.close();
             }
         } catch (SQLException e) {
-            System.out.println("Couldn't close connection: " + e.getMessage());
+            System.out.println("Couldn't close connection: " +e.getMessage());
         }
     }
 
@@ -716,22 +716,16 @@ public class dataSource {
      * BEGIN ODERS QUERRY *
      ****************************/
     /**
-     * This method gets all orders from the database.
+     * This method gets all orders from the database. done
      */
     public List<orders> getAllOrders(int sortOrder) {
-
         StringBuilder queryOrders = new StringBuilder("SELECT " +
-                TABLE_ORDERS + "." + COLUMN_ORDERS_ID + ", " +
-                TABLE_ORDERS + "." + COLUMN_ORDERS_PRODUCT_ID + ", " +
-                TABLE_ORDERS + "." + COLUMN_ORDERS_USERS_ID + ", " +
-                TABLE_ORDERS + "." + COLUMN_ORDERS_CUSTOMER_ID + ", " +
-                TABLE_USERS + "." + COLUMN_USERS_FULLNAME + ", " +
-                TABLE_ORDERS + "." + COLUMN_ORDERS_DATE + ", " +
-                TABLE_ORDERS + "." + COLUMN_ORDERS_PAY_STATUS + ", " +
                 TABLE_PRODUCT + "." + COLUMN_PRODUCT_NAME + ", " +
-                TABLE_PRODUCT + "." + COLUMN_PRODUCT_PRICE +
+                TABLE_ORDERS + "." + COLUMN_ORDERS_DATE + ", " +
+                TABLE_ORDERS + "." + COLUMN_ORDERS_PAY_STATUS+ ", " +
+                TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_FULLNAME + ", " +
+                TABLE_USERS + "." + COLUMN_USERS_FULLNAME +
                 " FROM " + TABLE_ORDERS);
-
         queryOrders.append("" +
                 " LEFT JOIN " + TABLE_PRODUCT +
                 " ON " + TABLE_ORDERS + "." + COLUMN_ORDERS_PRODUCT_ID +
@@ -740,6 +734,10 @@ public class dataSource {
                 " LEFT JOIN " + TABLE_USERS +
                 " ON " + TABLE_ORDERS + "." + COLUMN_ORDERS_USERS_ID +
                 " = " + TABLE_USERS + "." + COLUMN_USERS_ID);
+        queryOrders.append("" +
+                " LEFT JOIN " + TABLE_CUSTOMER +
+                " ON " + TABLE_ORDERS + "." + COLUMN_ORDERS_CUSTOMER_ID +
+                " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ID);
 
         if (sortOrder != ORDER_BY_NONE) {
             queryOrders.append(" ORDER BY ");
@@ -750,23 +748,19 @@ public class dataSource {
                 queryOrders.append(" ASC");
             }
         }
-
-        try (Statement statement = conn.createStatement();
-                ResultSet results = statement.executeQuery(queryOrders.toString())) {
-
-            List<orders> orders = new ArrayList<>();
-            while (results.next()) {
-                orders order = new orders();
-                order.setOrders_id(results.getInt("orders_id"));
-                order.setOrders_date(results.getDate("orders_date"));
-                order.setOrders_pay_status(results.getString("orders_pay_status"));
-                order.setProduct_id(results.getInt("product_id"));
-                order.setCustomer_id(results.getInt("customer_id"));
-                order.setUsers_id(results.getInt("users_id"));
-                orders.add(order);
-            }
-            return orders;
-
+        try (Statement statement = conn.createStatement()) {
+        ResultSet rs = statement.executeQuery(queryOrders.toString());
+        List<orders> orders = new ArrayList<>();
+        while (rs.next()) {
+            orders newOrder = new orders();
+            newOrder.setProduct_name(rs.getString(1));
+            newOrder.setOrders_date(rs.getTimestamp(2));
+            newOrder.setOrders_pay_status(rs.getString(3));
+            newOrder.setCustomer_name(rs.getString(4));
+            newOrder.setUsers_name(rs.getString(5));
+            orders.add(newOrder);
+        }
+        return orders;
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
             return null;
@@ -817,7 +811,7 @@ public class dataSource {
             while (results.next()) {
                 orders order = new orders();
                 order.setOrders_id(results.getInt("orders_id"));
-                order.setOrders_date(results.getDate("orders_date"));
+                // order.setOrders_date(results.getDate("orders_date"));
                 order.setOrders_pay_status(results.getString("orders_pay_status"));
                 order.setProduct_id(results.getInt("product_id"));
                 order.setCustomer_id(results.getInt("customer_id"));

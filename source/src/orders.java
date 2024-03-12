@@ -1,24 +1,28 @@
 package source.src;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class orders {
     private int orders_id;
-    private Date orders_date;
+    private Timestamp orders_date;
     private String orders_pay_status;
     private int product_id;
     private int users_id;
-    private int customer_id;   
+    private int customer_id;  
+    private String product_name;
+    private String customer_name;
+    private String users_name; 
     public int getOrders_id() {
         return orders_id;
     }
     public void setOrders_id(int orders_id) {
         this.orders_id = orders_id;
     }
-    public Date getOrders_date() {
+    public Timestamp getOrders_date() {
         return orders_date;
     }
-    public void setOrders_date(Date orders_date) {
+    public void setOrders_date(Timestamp orders_date) {
         this.orders_date = orders_date;
     }
     public String getOrders_pay_status() {
@@ -44,6 +48,24 @@ public class orders {
     }
     public void setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
+    }
+    public String getProduct_name() {
+        return product_name;
+    }
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+    public String getCustomer_name() {
+        return customer_name;
+    }
+    public void setCustomer_name(String customer_name) {
+        this.customer_name = customer_name;
+    }
+    public String getUsers_name() {
+        return users_name;
+    }
+    public void setUsers_name(String users_name) {
+        this.users_name = users_name;
     }
     @Override
     public String toString() {

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -826,7 +827,7 @@ public class dataSource {
     /**
      * This method insert one order to the database.
      */
-    public boolean insertNewOrder(int product_id, int user_id, int customer_id, Date order_date,
+    public boolean insertNewOrder(int product_id, int user_id, int customer_id, Timestamp order_date,
             String order_pay_status) {
 
         String sql = "INSERT INTO " + TABLE_ORDERS + " ("
@@ -841,8 +842,8 @@ public class dataSource {
             statement.setInt(1, product_id);
             statement.setInt(2, user_id);
             statement.setInt(3, customer_id);
-            statement.setDate(4, order_date);
-            statement.setString(4, order_pay_status);
+            statement.setTimestamp(4, order_date);
+            statement.setString(5, order_pay_status);
 
             statement.executeUpdate();
             return true;

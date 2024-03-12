@@ -31,7 +31,6 @@ public class userSessionController{
 
     /**
      * Get the only object available
-     * @return      UserSessionController instance.
      */
     public static userSessionController getInstance() {
         return instance;
